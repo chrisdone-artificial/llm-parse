@@ -3,3 +3,5 @@ dist-newstyle/
 dist-newstyle/
 .direnv
 .stack-work
+*.hi
+*.o
