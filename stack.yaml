@@ -1,0 +1,7 @@
+resolver: lts-24.16
+packages:
+  - .
+allow-different-user: true
+extra-deps:
+  - github: chrisdone-artificial/sse-conduit
+    commit: c2d8aa02f1c4138d5b3685876ce05650d344c01e

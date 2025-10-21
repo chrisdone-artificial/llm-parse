@@ -1,0 +1,71 @@
+cabal-version: 2.2
+
+-- This file has been generated from package.yaml by hpack version 0.38.1.
+--
+-- see: https://github.com/sol/hpack
+
+name:           llm-conduit
+version:        0.1.0.0
+homepage:       https://github.com/chrisdone/llm-conduit#readme
+bug-reports:    https://github.com/chrisdone/llm-conduit/issues
+author:         Chris Done
+maintainer:     chris@chrisdone.com
+copyright:      2025 Chris Done
+license:        BSD-3-Clause
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    CHANGELOG.md
+
+source-repository head
+  type: git
+  location: https://github.com/chrisdone/llm-conduit
+
+library
+  exposed-modules:
+      Data.Conduit.LLM
+  other-modules:
+      Paths_llm_conduit
+  autogen-modules:
+      Paths_llm_conduit
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , bytestring
+    , conduit
+    , conduit-extra
+    , http-conduit
+    , http-types
+    , resourcet
+    , sse-conduit
+    , text
+  default-language: Haskell2010
+
+test-suite llm-conduit-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_llm_conduit
+  autogen-modules:
+      Paths_llm_conduit
+  hs-source-dirs:
+      test
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , bytestring
+    , conduit
+    , conduit-extra
+    , hspec
+    , http-conduit
+    , http-types
+    , llm-conduit
+    , resourcet
+    , sse-conduit
+    , text
+  default-language: Haskell2010
