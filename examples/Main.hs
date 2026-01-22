@@ -1,5 +1,6 @@
 -- stack ghc examples/Main.hs
 {-# language BlockArguments, OverloadedStrings #-}
+import System.Environment
 import System.IO
 import Control.Monad.IO.Class
 import Data.Maybe
@@ -12,6 +13,7 @@ import Network.HTTP.Simple
 import Data.Aeson
 
 main = do
+  prefix <- getEnv "LLAMA_PREFIX"
   -- Make a request
   let requestBody = object
         [ "messages" .=
@@ -23,7 +25,7 @@ main = do
         , "stream" .= True
         , "temperature" .= (0.7 :: Double)
         ]
-  req <- parseRequest "POST http://10.0.1.85:8080/v1/chat/completions"
+  req <- parseRequest $ "POST " <> prefix <> "/v1/chat/completions"
   let req' = setRequestHeader "Content-Type" ["application/json"]
            $ setRequestBodyJSON requestBody
            $ req

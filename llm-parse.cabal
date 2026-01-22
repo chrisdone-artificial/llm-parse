@@ -4,10 +4,10 @@ cabal-version: 2.2
 --
 -- see: https://github.com/sol/hpack
 
-name:           llm-conduit
+name:           llm-parse
 version:        0.1.0.0
-homepage:       https://github.com/chrisdone/llm-conduit#readme
-bug-reports:    https://github.com/chrisdone/llm-conduit/issues
+homepage:       https://github.com/chrisdone/llm-parse#readme
+bug-reports:    https://github.com/chrisdone/llm-parse/issues
 author:         Chris Done
 maintainer:     chris@chrisdone.com
 copyright:      2025 Chris Done
@@ -20,15 +20,15 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/chrisdone/llm-conduit
+  location: https://github.com/chrisdone/llm-parse
 
 library
   exposed-modules:
       Data.Conduit.LLM
   other-modules:
-      Paths_llm_conduit
+      Paths_llm_parse
   autogen-modules:
-      Paths_llm_conduit
+      Paths_llm_parse
   hs-source-dirs:
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
@@ -45,13 +45,13 @@ library
     , text
   default-language: Haskell2010
 
-test-suite llm-conduit-test
+test-suite llm-parse-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      Paths_llm_conduit
+      Paths_llm_parse
   autogen-modules:
-      Paths_llm_conduit
+      Paths_llm_parse
   hs-source-dirs:
       test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
@@ -64,7 +64,7 @@ test-suite llm-conduit-test
     , hspec
     , http-conduit
     , http-types
-    , llm-conduit
+    , llm-parse
     , resourcet
     , sse-conduit
     , text

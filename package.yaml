@@ -1,6 +1,6 @@
-name:                llm-conduit
+name:                llm-parse
 version:             0.1.0.0
-github:              "chrisdone/llm-conduit"
+github:              "chrisdone/llm-parse"
 license:             BSD-3-Clause
 author:              "Chris Done"
 maintainer:          "chris@chrisdone.com"
@@ -37,7 +37,7 @@ library:
   source-dirs: src
 
 tests:
-  llm-conduit-test:
+  llm-parse-test:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
@@ -45,5 +45,5 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - llm-conduit
+    - llm-parse
     - hspec

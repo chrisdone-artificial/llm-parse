@@ -15,6 +15,17 @@ packages:
     version: 0.1.0.0
   original:
     url: https://github.com/chrisdone-artificial/sse-conduit/archive/c2d8aa02f1c4138d5b3685876ce05650d344c01e.tar.gz
+- completed:
+    name: llm-conduit
+    pantry-tree:
+      sha256: 281390f380e991a550015ef1b5f2426d7f2333e461b795dfceb9f7de6a79f40d
+      size: 636
+    sha256: 4be3978a8fa6170a30dea9a53cd2f24d1a28755619000aca7ddc7b32b3a87eb1
+    size: 6222
+    url: https://github.com/chrisdone-artificial/llm-conduit/archive/c7661fef9c1d631b27dd05c4df3ea577d3f8d022.tar.gz
+    version: 0.1.0.0
+  original:
+    url: https://github.com/chrisdone-artificial/llm-conduit/archive/c7661fef9c1d631b27dd05c4df3ea577d3f8d022.tar.gz
 snapshots:
 - completed:
     sha256: 309392e77af949aff34933aff53070c774d274b0f2f7e314df665c0d322c7715

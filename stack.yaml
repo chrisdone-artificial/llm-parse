@@ -5,3 +5,5 @@ allow-different-user: true
 extra-deps:
   - github: chrisdone-artificial/sse-conduit
     commit: c2d8aa02f1c4138d5b3685876ce05650d344c01e
+  - github: chrisdone-artificial/llm-conduit
+    commit: c7661fef9c1d631b27dd05c4df3ea577d3f8d022
