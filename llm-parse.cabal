@@ -38,8 +38,10 @@ library
     , bytestring
     , conduit
     , conduit-extra
+    , free
     , http-conduit
     , http-types
+    , llm-conduit
     , resourcet
     , sse-conduit
     , text
@@ -61,9 +63,11 @@ test-suite llm-parse-test
     , bytestring
     , conduit
     , conduit-extra
+    , free
     , hspec
     , http-conduit
     , http-types
+    , llm-conduit
     , llm-parse
     , resourcet
     , sse-conduit

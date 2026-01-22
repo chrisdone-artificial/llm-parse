@@ -21,6 +21,8 @@ dependencies:
 - aeson
 - bytestring
 - sse-conduit
+- free
+- llm-conduit
 
 ghc-options:
 - -Wall
