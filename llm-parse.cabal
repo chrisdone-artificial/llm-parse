@@ -38,10 +38,12 @@ library
     , bytestring
     , conduit
     , conduit-extra
+    , containers
     , free
     , http-conduit
     , http-types
     , llm-conduit
+    , regex-applicative
     , resourcet
     , sse-conduit
     , text
@@ -63,12 +65,14 @@ test-suite llm-parse-test
     , bytestring
     , conduit
     , conduit-extra
+    , containers
     , free
     , hspec
     , http-conduit
     , http-types
     , llm-conduit
     , llm-parse
+    , regex-applicative
     , resourcet
     , sse-conduit
     , text

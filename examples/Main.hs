@@ -1,5 +1,9 @@
 -- stack ghc examples/Main.hs
-{-# language BlockArguments, OverloadedStrings #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# language ImportQualifiedPost, BlockArguments, OverloadedStrings #-}
+import qualified Text.Regex.Applicative as RE
+import Data.Text qualified as T
+import Data.GBNF
 import System.Environment
 import System.IO
 import Control.Monad.IO.Class
@@ -14,15 +18,21 @@ import Data.Aeson
 
 main = do
   prefix <- getEnv "LLAMA_PREFIX"
-  -- Make a request
+
+  let rules = (:) <$> num <*> manyR (litR ", " *> num)
+        where num = someP [Range '0' '9']
+  let prompt :: String =
+        "Give me a comma-separated list of integers, no other content."
+
   let requestBody = object
         [ "messages" .=
             [ object
                 [ "role" .= ("user" :: String)
-                , "content" .= ("Hello! Can you tell me a joke?" :: String)
+                , "content" .= prompt
                 ]
             ]
         , "stream" .= True
+        , "grammar" .= rootGBNF rules
         , "temperature" .= (0.7 :: Double)
         ]
   req <- parseRequest $ "POST " <> prefix <> "/v1/chat/completions"
@@ -30,14 +40,22 @@ main = do
            $ setRequestBodyJSON requestBody
            $ req
 
-
-  -- Show one token at a time
   hSetBuffering stdout NoBuffering
 
-  -- Make the request and put the words to stdout
-  runConduitRes $ httpSource req' getResponseBody
-    .| sseParser           -- ByteString → ServerEvent
-    .| llmStreamParser     -- ServerEvent → StreamChunk
-    .| CL.mapM_ \chunk ->
-        mapM_ (liftIO . T.putStr . fromMaybe "" . deltaContent . choiceDelta)
-              (chunkChoices chunk)
+  putStrLn $ "\nGBNF: " ++ rootGBNF rules
+
+  putStr "\nStream: "
+  out <- runConduitRes $ httpSource req' getResponseBody
+    .| sseParser
+    .| llmStreamParser
+    .| CL.concatMapM (\chunk ->
+        mapM (\c -> do
+                let out = deltaContent . choiceDelta $ c
+                maybe (pure ()) (liftIO . T.putStr) out
+                pure $ maybe [] pure out)
+              (chunkChoices chunk))
+     .| CL.consume
+
+  let output = T.concat $ map T.concat out
+  putStrLn $ "\n\nParse: " ++ show
+    (RE.match (rulesToRegex rules) $ T.unpack $ output) --
