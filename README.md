@@ -36,35 +36,31 @@ easy.
 Grammar and prompt combo:
 
 ```haskell
-  let rules = (:) <$> num <*> manyR (litR ", " *> num)
-        where num = someP [Range '0' '9']
-  let prompt :: String =
-        "Give me a comma-separated list of integers, no other content."
+  test "Give me a comma-separated list of random integers, no other content."
+       (let num = someP [Range '0' '9']
+        in (:) <$> num <*> manyR (litR ", " *> num))
+```
+
+```haskell
+  test "Generate a list of first names in a s-expression:"
+       (let nam = someP [Range 'a' 'z', Range 'A' 'Z']
+        in litR "(" *> ((:) <$> nam <*> manyR (litR " " *> nam)) <* litR ")")
 ```
 
 Output:
 
+```haskell
+GBNF: root ::= [0-9]+ (", " [0-9]+ )*
+
+Stream: 854, 219, 467, 982, 118
+
+Parse: Just ["854","219","467","982","118"]
 ```
-> main
 
-GBNF: root ::= [0-9]+ (", " [0-9]+ )*
+```haskell
+GBNF: root ::= "(" [a-zA-Z]+ (" " [a-zA-Z]+ )* ")"
 
-Stream: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+Stream: (alex andrew brian carol david emily franklin gerald hannah iris jasper katherine lauren luisa mae matthew natalie oscar pam peter quinn rachel samantha tessa upton victoria william xavier yearling zoe)
 
-Parse: Just ["1","2","3","4","5","6","7","8","9","10"]
-> main
-
-GBNF: root ::= [0-9]+ (", " [0-9]+ )*
-
-Stream: 1, 2, 3, 4, 5
-
-Parse: Just ["1","2","3","4","5"]
-> main
-
-GBNF: root ::= [0-9]+ (", " [0-9]+ )*
-
-Stream: 1, 2, 3, 4, 5
-
-Parse: Just ["1","2","3","4","5"]
-
+Parse: Just ["alex","andrew","brian","carol","david","emily","franklin","gerald","hannah","iris","jasper","katherine","lauren","luisa","mae","matthew","natalie","oscar","pam","peter","quinn","rachel","samantha","tessa","upton","victoria","william","xavier","yearling","zoe"]
 ```

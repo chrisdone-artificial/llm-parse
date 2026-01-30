@@ -1,13 +1,13 @@
 -- stack ghc examples/Main.hs
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# language ImportQualifiedPost, BlockArguments, OverloadedStrings #-}
+import Control.Applicative.Free
 import qualified Text.Regex.Applicative as RE
 import Data.Text qualified as T
 import Data.GBNF
 import System.Environment
 import System.IO
 import Control.Monad.IO.Class
-import Data.Maybe
 import qualified Data.Text.IO as T
 import Data.Conduit.SSE
 import Data.Conduit
@@ -16,14 +16,19 @@ import qualified Data.Conduit.List as CL
 import Network.HTTP.Simple
 import Data.Aeson
 
+main :: IO ()
 main = do
+  test "Give me a comma-separated list of random integers, no other content."
+       (let num = someP [Range '0' '9']
+        in (:) <$> num <*> manyR (litR ", " *> num))
+
+  test "Generate a list of first names in a s-expression:"
+       (let nam = someP [Range 'a' 'z', Range 'A' 'Z']
+        in litR "(" *> ((:) <$> nam <*> manyR (litR " " *> nam)) <* litR ")")
+
+test :: Show a => String -> Ap Rule a -> IO ()
+test prompt rules' = do
   prefix <- getEnv "LLAMA_PREFIX"
-
-  let rules = (:) <$> num <*> manyR (litR ", " *> num)
-        where num = someP [Range '0' '9']
-  let prompt :: String =
-        "Give me a comma-separated list of integers, no other content."
-
   let requestBody = object
         [ "messages" .=
             [ object
@@ -32,8 +37,9 @@ main = do
                 ]
             ]
         , "stream" .= True
-        , "grammar" .= rootGBNF rules
+        , "grammar" .= rootGBNF rules'
         , "temperature" .= (0.7 :: Double)
+        , "n_predict" .= (512 :: Double)
         ]
   req <- parseRequest $ "POST " <> prefix <> "/v1/chat/completions"
   let req' = setRequestHeader "Content-Type" ["application/json"]
@@ -42,7 +48,7 @@ main = do
 
   hSetBuffering stdout NoBuffering
 
-  putStrLn $ "\nGBNF: " ++ rootGBNF rules
+  putStrLn $ "\nGBNF: " ++ rootGBNF rules'
 
   putStr "\nStream: "
   out <- runConduitRes $ httpSource req' getResponseBody
@@ -58,4 +64,4 @@ main = do
 
   let output = T.concat $ map T.concat out
   putStrLn $ "\n\nParse: " ++ show
-    (RE.match (rulesToRegex rules) $ T.unpack $ output) --
+    (RE.match (rulesToRegex rules') $ T.unpack $ output) --
